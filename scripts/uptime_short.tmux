@@ -1,3 +1,3 @@
 #!/bin/bash
-uptime -p | sed 's/\sdays\?/d/g' | sed 's/\shours\?/h/g' | sed 's/\sminutes\?/m/g' | sed 's/,//g'
+uptime -p | sed 's/\sdays\?/d/g ; s/\shours\?/h/g ; s/\sminutes\?/m/g ; s/,//g'
 

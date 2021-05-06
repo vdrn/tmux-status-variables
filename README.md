@@ -13,29 +13,30 @@ Add the following to your `tmux.conf`, to show the amount of free memory:
 
 ### Plugins
 
-| Name              | Script           | Explanation                                                                        |
-|:------------------|:-----------------|:-----------------------------------------------------------------------------------|
-| ipinfo.io         | ipinfo           | Show public ip address info                                                        |
-| Free Memory       | free_mem         | Show how much free memory is available                                             |
-| Package Updates   | package_updates  | Show if there are any package updates (updates;security-updates)                   |
-| System Uptime     | uptime           | Show the uptime of the system                                                      |
+| Name                | Script          | Explanation                                                      |
+|---------------------|-----------------|------------------------------------------------------------------|
+| ipinfo.io           | ipinfo          | Show public ip address info                                      |
+| Free Memory         | free_mem        | Show how much free memory is available                           |
+| Package Updates     | package_updates | Show if there are any package updates (updates;security-updates) |
+| System Uptime       | uptime          | Show the uptime of the system                                    |
+| System Uptime Short | uptime_short    | Show the uptime of the system in short format                    |
 
 #### ipinfo.io
 
 Information is acquired using [ipinfo.io](https://ipinfo.io), and can be formatted as any combination of the fields [ipinfo.io](https://ipinfo.io) return.
 
-To control the format, set the *@ipinfo_format* variable to your liking. The following fields are supported:  
+To control the format, set the *@ipinfo_format* variable to your liking. The following fields are supported:
 
 - #ip
 - #hostname
 - #city
 - #region
-- #country 
+- #country
 - #location
 - #isp
 - #asn
 
-For instance, if you want this format: "IP_ADDRESS (ISP_NAME)", run the following:  
+For instance, if you want this format: "IP_ADDRESS (ISP_NAME)", run the following:
 `tmux set-option -g @ipinfo_format "#ip (#isp)"`
 
 **!** This script requires [jq](https://stedolan.github.io/jq), a lightweight and flexible command-line JSON processor.
@@ -73,38 +74,38 @@ run-shell /a/clone/path/tmux_status_variables.tmux
 
 Reload TMUX environment (type this in terminal)
 
-   $ tmux source-file ~/.tmux.conf
+  $ tmux source-file ~/.tmux.conf
 
 ### How does it work?
 
-   Each `*.tmux` scripts in the `scripts directory` and `@user_scripts_dir` is loaded.
-   the name of the script is the name of the variable that'll be used in the status line.
+  Each `*.tmux` scripts in the `scripts directory` and `@user_scripts_dir` is loaded.
+  the name of the script is the name of the variable that'll be used in the status line.
 
-   for example, the `free_mem.tmux` script echos the amount of free memory.
-   to add it to the left status, just write: `set -g status-left "#{free_mem}"`
+  for example, the `free_mem.tmux` script echos the amount of free memory.
+  to add it to the left status, just write: `set -g status-left "#{free_mem}"`
 
 ### Plugin skeleton
 
-   A regular plugin only needs to have execution priviledges.
-   For instance, lets look at this 'hello world' plugin:
+  A regular plugin only needs to have execution priviledges.
+  For instance, lets look at this 'hello world' plugin:
 
-   ```bash
+  ```bash
 #!/bin/bash
-   echo "hello world!"
-   ```
+  echo "hello world!"
+  ```
 
-   If 'hello world' takes a lot of time, we might want to cache the result.
-   Results are cached for `status-interval` seoconds. lets look at the following plugin:
+  If 'hello world' takes a lot of time, we might want to cache the result.
+  Results are cached for `status-interval` seoconds. lets look at the following plugin:
 
-   ```bash
+  ```bash
 #!/bin/bash
-   PLUGIN_DIR=$(tmux show-option -gqv "@status_variables_dir")
-   source "$PLUGIN_DIR/utils/sdk.sh"
+  PLUGIN_DIR=$(tmux show-option -gqv "@status_variables_dir")
+  source "$PLUGIN_DIR/utils/sdk.sh"
 
-   on_cache_miss() {
-      echo "hello world!"
-         sleep 1
-   }
+  on_cache_miss() {
+    echo "hello world!"
+      sleep 1
+  }
 
 echo "$(get_cached_value on_cache_miss)"
 ```
